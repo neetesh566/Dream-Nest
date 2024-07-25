@@ -76,6 +76,12 @@ const RegisterPage = () => {
             <img src="/assets/addImage.png" alt="add profile photo" />
             <p>Upload Your Photo</p>
           </label>
+          {formData.profileImage && (
+            <img src={URL.createObjectURL(formData.profileImage)}
+            alt="profile photo"
+            style={{maxWidth:"80px"}}
+            />
+          )}
           <button type="submit">REGISTER</button>
         </form>
         <a href="/login"> Already have an account? Log In Here</a>
