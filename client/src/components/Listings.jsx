@@ -67,18 +67,18 @@ const Listings = () => {
               category,
               type,
               price,
-              booking=false
+              booking = false
             }) => (
               <ListingCard
-                listingId={_id}
-                creator={creator}
-                listingPhotoPaths={listingPhotoPaths}
-                city={city}
-                province={province}
-                country={country}
-                category={category}
-                type={type}
-                price={price}
+                listingId={_id || ""}
+                creator={creator || ""}
+                listingPhotoPaths={listingPhotoPaths || []}
+                city={city || ""}
+                province={province || ""}
+                country={country || ""}
+                category={category || ""}
+                type={type || ""}
+                price={price || 0}
                 booking={booking}
               />
             )

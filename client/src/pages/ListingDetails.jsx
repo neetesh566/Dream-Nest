@@ -13,7 +13,6 @@ import Footer from "../components/Footer";
 
 const ListingDetails = () => {
   const [loading, setLoading] = useState(true);
-
   const { listingId } = useParams();
   const [listing, setListing] = useState(null);
 
@@ -36,9 +35,7 @@ const ListingDetails = () => {
 
   useEffect(() => {
     getListingDetails();
-  }, []);
-
-  console.log(listing);
+  }, [listingId]);
 
   /* BOOKING CALENDAR */
   const [dateRange, setDateRange] = useState([
@@ -50,7 +47,6 @@ const ListingDetails = () => {
   ]);
 
   const handleSelect = (ranges) => {
-    // Update the selected date range when user makes a selection
     setDateRange([ranges.selection]);
   };
 
@@ -64,6 +60,8 @@ const ListingDetails = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    if (!listing) return;
+
     try {
       const bookingForm = {
         customerId,
@@ -98,58 +96,64 @@ const ListingDetails = () => {
 
       <div className="listing-details">
         <div className="title">
-          <h1>{listing.title}</h1>
+          <h1>{listing?.title}</h1>
           <div></div>
         </div>
 
         <div className="photos">
-          {listing.listingPhotoPaths?.map((item) => (
+          {listing?.listingPhotoPaths?.map((item, index) => (
             <img
-              key={item}
-              src={`http://localhost:3001/${item?.replace("public", "")}`}
+              key={index}
+              src={`http://localhost:3001/${item.replace("public", "")}`}
               alt="listing photo"
             />
           ))}
         </div>
 
         <h2>
-          {listing.type} in {listing.city}, {listing.province}, {listing.country}
+          {listing?.type} in {listing?.city}, {listing?.province},{" "}
+          {listing?.country}
         </h2>
         <p>
-          {listing.guestCount} guests - {listing.bedroomCount} bedroom(s) -{" "}
-          {listing.bedCount} bed(s) - {listing.bathroomCount} bathroom(s)
+          {listing?.guestCount} guests - {listing?.bedroomCount} bedroom(s) -{" "}
+          {listing?.bedCount} bed(s) - {listing?.bathroomCount} bathroom(s)
         </p>
         <hr />
 
         <div className="profile">
-          <img
-            src={`http://localhost:3001/${
-              listing.creator?.profileImagePath?.replace("public", "") || ""
-            }`}
-            alt="host profile"
-          />
+          {listing?.creator?.profileImagePath && (
+            <img
+              src={`http://localhost:3001/${listing.creator.profileImagePath.replace(
+                "public",
+                ""
+              )}`}
+              alt="host profile"
+            />
+          )}
           <h3>
-            Hosted by {listing.creator.firstName} {listing.creator.lastName}
+            Hosted by {listing?.creator?.firstName}{" "}
+            {listing?.creator?.lastName}
           </h3>
         </div>
         <hr />
 
         <h3>Description</h3>
-        <p>{listing.description}</p>
+        <p>{listing?.description}</p>
         <hr />
 
-        <h3>{listing.highlight}</h3>
-        <p>{listing.highlightDesc}</p>
+        <h3>{listing?.highlight}</h3>
+        <p>{listing?.highlightDesc}</p>
         <hr />
 
         <div className="booking">
           <div>
             <h2>What this place offers?</h2>
             <div className="amenities">
-              {listing.amenities[0]?.split(",").map((item, index) => (
+              {listing?.amenities?.[0]?.split(",").map((item, index) => (
                 <div className="facility" key={index}>
                   <div className="facility_icon">
-                    {facilities.find((facility) => facility.name === item)?.icon}
+                    {facilities.find((facility) => facility.name === item)
+                      ?.icon}
                   </div>
                   <p>{item}</p>
                 </div>
@@ -163,15 +167,15 @@ const ListingDetails = () => {
               <DateRange ranges={dateRange} onChange={handleSelect} />
               {dayCount > 1 ? (
                 <h2>
-                  ${listing.price} x {dayCount} nights
+                  ${listing?.price} x {dayCount} nights
                 </h2>
               ) : (
                 <h2>
-                  ${listing.price} x {dayCount} night
+                  ${listing?.price} x {dayCount} night
                 </h2>
               )}
 
-              <h2>Total price: ${listing.price * dayCount}</h2>
+              <h2>Total price: ${listing?.price * dayCount}</h2>
               <p>Start Date: {dateRange[0].startDate.toDateString()}</p>
               <p>End Date: {dateRange[0].endDate.toDateString()}</p>
 
