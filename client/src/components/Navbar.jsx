@@ -34,7 +34,9 @@ const Navbar = () => {
         <IconButton disabled={search === ""}>
           <Search
             sx={{ color: variables.pinkred }}
-            onClick={() => navigate(`/properties/search/${search}`)}
+            onClick={() => {
+              navigate(`/properties/search/${search}`);
+            }}
           />
         </IconButton>
       </div>
@@ -59,10 +61,14 @@ const Navbar = () => {
             <Person sx={{ color: variables.darkgrey }} />
           ) : (
             <img
-              src={`http://localhost:3001/${user.profileImagePath?.replace(
-                "public",
-                ""
-              )}`}
+              src={
+                user.profileImagePath
+                  ? `http://localhost:3001/${user.profileImagePath.replace(
+                      "public",
+                      ""
+                    )}`
+                  : "/assets/default-profile.png"
+              }
               alt="profile photo"
               style={{ objectFit: "cover", borderRadius: "50%" }}
             />
